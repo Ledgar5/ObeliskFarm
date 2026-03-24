@@ -1,1 +1,1 @@
-Tested up to Idle Obelisk Miner v2.1.5
+Tested up to Idle Obelisk Miner version 2.1.5
