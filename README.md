@@ -1,1 +1,1 @@
-Tested up to Obelisk level 60.
+Tested up to Idle Obelisk Miner version 2.1.5
