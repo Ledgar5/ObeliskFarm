@@ -35,29 +35,32 @@ class BlockData:
 # All block data organized by (tier, block_type)
 # Format: BlockData(tier, type, health, xp, armor, fragment, floor_min, floor_max)
 BLOCK_DATA: List[BlockData] = [
-    # Tier 1
-    BlockData(1, 'dirt',      100,   0.05,   0,  0.00,  1, 11),
-    BlockData(1, 'common',    250,   0.15,   5,  0.01,  1, 17),
-    BlockData(1, 'rare',      550,   0.35,  12,  0.01,  3, 25),
-    BlockData(1, 'epic',     1150,   1.00,  25,  0.01,  6, 29),
-    BlockData(1, 'legendary', 1950,  3.50,  50,  0.01, 12, 31),
-    BlockData(1, 'mythic',   3500,   7.50, 150,  0.01, 20, 34),
+    # Tier 1                    HP      XP      ARMOR    FRG    fll min    flr max
+    BlockData(1, 'dirt',        100,    0.05,   0,       0.00,  1,         11),
+    BlockData(1, 'common',      250,    0.15,   5,       0.01,  1,         17),
+    BlockData(1, 'rare',        550,    0.35,   12,      0.01,  3,         25),
+    BlockData(1, 'epic',        1150,   1.00,   25,      0.01,  6,         29),
+    BlockData(1, 'legendary',   1950,   3.50,   50,      0.01,  12,        31),
+    BlockData(1, 'mythic',      3500,   7.50,   150,     0.01,  20,        34),
+    BlockData(1, 'divine',      25000,  20,     300,     0.01,  50,        74),
     
-    # Tier 2
-    BlockData(2, 'dirt',      300,   0.15,   0,  0.00, 12, 23),
-    BlockData(2, 'common',    600,   0.45,   9,  0.02, 18, 28),
-    BlockData(2, 'rare',     1650,   1.05,  21,  0.02, 26, 35),
-    BlockData(2, 'epic',     3450,   3.00,  44,  0.02, 30, 41),
-    BlockData(2, 'legendary', 5850, 10.50,  88,  0.02, 32, 44),
-    BlockData(2, 'mythic',  10500,  22.50, 262,  0.02, 36, 49),
+    # Tier 2                    HP      XP      ARMOR    FRG    fll min    flr max
+    BlockData(2, 'dirt',        300,    0.15,   0,       0.00,  12,        23),
+    BlockData(2, 'common',      600,    0.45,   9,       0.02,  18,        28),
+    BlockData(2, 'rare',        1650,   1.05,   21,      0.02,  26,        35),
+    BlockData(2, 'epic',        3450,   3.00,   44,      0.02,  30,        41),
+    BlockData(2, 'legendary',   5850,   10.50,  88,      0.02,  32,        44),
+    BlockData(2, 'mythic',      10500,  22.50,  262,     0.02,  36,        49),
+    BlockData(2, 'divine',      75000,  60.00,  495,     0.02,  75,        99),
     
-    # Tier 3
-    BlockData(3, 'dirt',      900,   0.45,   0,  0.04, 24, float('inf')),
-    BlockData(3, 'common',   2250,   1.35,  15,  0.04, 30, float('inf')),
-    BlockData(3, 'rare',     4950,   3.15,  37,  0.04, 36, float('inf')),
-    BlockData(3, 'epic',    10350,   9.00,  77,  0.04, 42, float('inf')),
-    BlockData(3, 'legendary', 17500, 31.50, 153, 0.04, 45, float('inf')),
-    BlockData(3, 'mythic',  31500,  67.50, 459,  0.04, 50, float('inf')),
+    # Tier 3                   HP      XP      ARMOR    FRG    fll min    flr max
+    BlockData(3, 'dirt',       900,    0.45,   0,       0.04,  24,        float('inf')),
+    BlockData(3, 'common',     2250,   1.35,   13.61,   0.04,  30,        float('inf')),
+    BlockData(3, 'rare',       4950,   3.15,   32.67,   0.04,  36,        float('inf')),
+    BlockData(3, 'epic',       10350,  9.00,   68.06,   0.04,  42,        float('inf')),
+    BlockData(3, 'legendary',  17550,  31.50,  136.12,  0.04,  45,        float('inf')),
+    BlockData(3, 'mythic',     31500,  67.50,  408.37,  0.04,  50,        float('inf')),
+    BlockData(3, 'divine',     225000, 180.00, 816.75,  0.04,  100,       float('inf')),
 ]
 
 # Block types in order of rarity
