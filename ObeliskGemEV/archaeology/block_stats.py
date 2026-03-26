@@ -64,7 +64,7 @@ BLOCK_DATA: List[BlockData] = [
 ]
 
 # Block types in order of rarity
-BLOCK_TYPES = ['dirt', 'common', 'rare', 'epic', 'legendary', 'mythic']
+BLOCK_TYPES = ['dirt', 'common', 'rare', 'epic', 'legendary', 'mythic', 'divine']
 
 # Index for quick lookup: (tier, block_type) -> BlockData
 _BLOCK_INDEX: Dict[Tuple[int, str], BlockData] = {
@@ -85,7 +85,7 @@ def get_block_data(tier: int, block_type: str) -> Optional[BlockData]:
     
     Args:
         tier: Block tier (1, 2, or 3)
-        block_type: Block type ('dirt', 'common', 'rare', 'epic', 'legendary', 'mythic')
+        block_type: Block type ('dirt', 'common', 'rare', 'epic', 'legendary', 'mythic', 'divine')
     
     Returns:
         BlockData object or None if not found
