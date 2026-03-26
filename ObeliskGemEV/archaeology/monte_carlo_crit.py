@@ -73,6 +73,8 @@ class MonteCarloCritSimulator:
             return 0.94  # -6%
         elif misc_card_level == 3:
             return 0.90  # -10%
+        elif misc_card_level == 4:
+            return 0.86  # -13.6%
         return 1.0
     
     def calculate_effective_damage(self, stats: Dict, block_armor: int) -> int:
