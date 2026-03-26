@@ -40,11 +40,12 @@ SAVE_FILE = SAVE_DIR / "archaeology_save.json"
 # Skill point caps (game rules)
 # STR/AGI can be allocated up to 50, PER/INT/LUC up to 25.
 SKILL_POINT_CAPS = {
-    "strength": 50,
-    "agility": 50,
-    "perception": 25,
-    "intellect": 25,
-    "luck": 25,
+    "strength":    50,
+    "agility":     50,
+    "perception":  25,
+    "intellect":   25,
+    "luck":        25,
+    "divinity":    10,
 }
 
 
@@ -393,6 +394,11 @@ class ArchaeologySimulatorWindow:
             'all_mod_chance': 0.002,
             'one_hit_chance': 0.0004,
         },
+           'divinity': {
+            'flat_damage': 2,
+            'super_crit_chance': 0.02,
+            'crosshair_auto-tap': 0.02,
+        },
     }
     
     # Enrage ability constants
@@ -697,6 +703,16 @@ class ArchaeologySimulatorWindow:
             'cost_type': 'mythic',
             'display_name': 'Exp 2x/Caps +5',
         },
+        
+         # Divine Fragment Upgrades (red)
+        'str_skill_buff': {
+            'percent_damage': 0.01,  # +1%
+            'crit_damage': 0.01,     # +1%
+            'max_level': 1,
+            'stage_unlock': 50,
+            'cost_type': 'divine',
+            'display_name': 'Dmg +1%/Crit Dmg +1',
+        },
     }
     
     # Gem costs per level for each upgrade type
@@ -737,6 +753,7 @@ class ArchaeologySimulatorWindow:
         'epic': '#9932CC',      # Dark Orchid (Purple)
         'legendary': '#6B5200', # Much darker gold (more contrast)
         'mythic': '#FF4500',    # Orange Red
+        'divine': '#ff4040',    # Red
     }
     
     # Game constants
