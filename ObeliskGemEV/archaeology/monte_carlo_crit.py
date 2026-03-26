@@ -164,7 +164,7 @@ class MonteCarloCritSimulator:
         
         Args:
             enrage_state: Dict with 'charges_remaining' and 'cooldown' keys, or None if not tracking
-            block_cards: Dict mapping block_type to card level (0=none, 1=card, 2=gilded)
+            block_cards: Dict mapping block_type to card level (0=none, 1=card, 2=gilded, 2=polychrome)
             effective_enrage_cooldown: Effective cooldown after misc card reduction (if None, uses base)
         
         Returns:
@@ -174,9 +174,11 @@ class MonteCarloCritSimulator:
         if block_cards and block_type:
             card_level = block_cards.get(block_type, 0)
             if card_level == 1:
-                block_hp = int(block_hp * 0.90)  # Card: -10% HP
+                block_hp = int(block_hp * 0.90)  # Card:       -10% HP
             elif card_level == 2:
-                block_hp = int(block_hp * 0.80)  # Gilded: -20% HP
+                block_hp = int(block_hp * 0.80)  # Gilded:     -20% HP
+            elif card_level == 3:
+                block_hp = int(block_hp * 0.65)  # Polychrome: -35% HP
         
         # Track if enrage was enabled (for return value)
         enrage_was_enabled = enrage_state is not None
@@ -401,6 +403,8 @@ class MonteCarloCritSimulator:
                                 block_hp = int(block_hp * 0.90)
                             elif card_level == 2:
                                 block_hp = int(block_hp * 0.80)
+                            elif card_level == 3:
+                                block_hp = int(block_hp * 0.65)
                         
                         floor_blocks.append((block_type, block_data, block_hp))
                         
@@ -452,9 +456,11 @@ class MonteCarloCritSimulator:
                     if block_cards and block_type in block_cards:
                         card_level = block_cards[block_type]
                         if card_level == 1:
-                            card_xp_mult = 1.10  # Card: +10% XP
+                            card_xp_mult = 1.10  # Card:       +10% XP
                         elif card_level == 2:
-                            card_xp_mult = 1.20  # Gilded: +20% XP
+                            card_xp_mult = 1.20  # Gilded:     +20% XP
+                        elif card_level == 3:
+                            card_xp_mult == 1.35 # Polychrome: +35% XP
                     # Check for exp mod
                     exp_mod_active = random.random() < exp_mod_chance
                     exp_mult = exp_mod_multiplier if exp_mod_active else 1.0
@@ -752,7 +758,7 @@ def debug_single_run(stats: Dict, starting_floor: int,
         use_crit: Whether to use crit calculations
         enrage_enabled: Whether Enrage ability is enabled
         flurry_enabled: Whether Flurry ability is enabled
-        block_cards: Dict mapping block_type to card level (0=none, 1=card, 2=gilded)
+        block_cards: Dict mapping block_type to card level (0=none, 1=card, 2=gilded, 3=polychrome)
         skill_points: Dict with skill point distribution (for display)
         seed: Random seed for reproducibility
     """
