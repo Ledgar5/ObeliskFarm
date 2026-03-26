@@ -23,7 +23,7 @@ from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 from .headless import ArchBuild, HeadlessArchaeologySimulator
 
 
-SKILLS = ("strength", "agility", "perception", "intellect", "luck")
+SKILLS = ("strength", "agility", "perception", "intellect", "luck", "divinity")
 
 
 @dataclass(frozen=True)
@@ -395,6 +395,7 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     p.add_argument("--base-per", type=int, default=10)
     p.add_argument("--base-int", type=int, default=5)
     p.add_argument("--base-luc", type=int, default=5)
+    p.add_argument("--base-div", type=int, default=5)
 
     # Factor step sizes (log-weight deltas)
     p.add_argument("--step", type=float, default=0.7, help="Delta step size per factor (log-weight space).")
@@ -412,6 +413,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "perception": args.base_per,
         "intellect": args.base_int,
         "luck": args.base_luc,
+        "divinity": args.base_div,
     }
 
     # Baseline build: keep upgrades/cards off by default (user can extend this script).
