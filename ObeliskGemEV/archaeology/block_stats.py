@@ -2,10 +2,10 @@
 Block Stats by Tier for Archaeology
 
 This module provides block statistics (HP, XP, Armor, Fragments) organized by tier.
-Each block type has 3 tiers that become available at different floor ranges.
+Each block type has 4 tiers that become available at different floor ranges.
 
-Block types: Dirt, Common, Rare, Epic, Legendary, Mythic
-Tiers: 1, 2, 3 (higher tiers have more HP/Armor but also more rewards)
+Block types: Dirt, Common, Rare, Epic, Legendary, Mythic, Divine
+Tiers: 1, 2, 3, 4 (higher tiers have more HP/Armor but also more rewards)
 """
 
 from typing import Dict, List, Tuple, Optional, NamedTuple
@@ -54,13 +54,22 @@ BLOCK_DATA: List[BlockData] = [
     BlockData(2, 'divine',      75000,  60.00,  495,     0.02,  75,        99),
     
     # Tier 3                   HP      XP      ARMOR    FRG    fll min    flr max
-    BlockData(3, 'dirt',       900,    0.45,   0,       0.04,  24,        float('inf')),
-    BlockData(3, 'common',     2250,   1.35,   13.61,   0.04,  30,        float('inf')),
-    BlockData(3, 'rare',       4950,   3.15,   32.67,   0.04,  36,        float('inf')),
-    BlockData(3, 'epic',       10350,  9.00,   68.06,   0.04,  42,        float('inf')),
-    BlockData(3, 'legendary',  17550,  31.50,  136.12,  0.04,  45,        float('inf')),
-    BlockData(3, 'mythic',     31500,  67.50,  408.37,  0.04,  50,        float('inf')),
-    BlockData(3, 'divine',     225000, 180.00, 816.75,  0.04,  100,       float('inf')),
+    BlockData(3, 'dirt',       900,    0.45,   0,       0.00,  24,        80),
+    BlockData(3, 'common',     2250,   1.35,   13.61,   0.04,  30,        95),
+    BlockData(3, 'rare',       4950,   3.15,   32.67,   0.04,  36,        110),
+    BlockData(3, 'epic',       10350,  9.00,   68.06,   0.04,  42,        125),
+    BlockData(3, 'legendary',  17550,  31.50,  136.12,  0.04,  45,        135),
+    BlockData(3, 'mythic',     31500,  67.50,  408.37,  0.04,  50,        140),
+    BlockData(3, 'divine',     225000, 180.00, 816.75,  0.04,  100,       149),
+
+      # Tier 4                 HP      XP      ARMOR    FRG    fll min    flr max
+    BlockData(4, 'dirt',       2700,   1.35,   0,       0.00,  81,        float('inf')),
+    BlockData(4, 'common',     6750,   4.05,   22.46,   0.08,  96,        float('inf')),
+    BlockData(4, 'rare',       14850,  9.45,   53.91,   0.08,  111,       float('inf')),
+    BlockData(4, 'epic',       31050,  27,     112.3,   0.08,  126,       float('inf')),
+    BlockData(4, 'legendary',  52650,  94.5,   224.61,  0.08,  136,       float('inf')),
+    BlockData(4, 'mythic',     94500,  202.5,  673.82,  0.08,  141,       float('inf')),
+    BlockData(4, 'divine',     675000, 540,    1347.64  0.08,  150,       float('inf')),
 ]
 
 # Block types in order of rarity
