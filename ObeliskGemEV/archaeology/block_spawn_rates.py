@@ -11,6 +11,7 @@ Block types:
 - Epic: Epic block (unlocks at stage 6)
 - Legendary: Legendary block (unlocks at stage 12)
 - Mythic: Mythic block (unlocks at stage 20)
+- Divine: Divine block (unlocks at stage 50)
 
 Boss Floors:
 Special floors where only one block type spawns (100% chance).
@@ -23,20 +24,22 @@ import random
 # Boss floors with 100% spawn rate for a single block type
 # Format: floor -> block_type
 BOSS_FLOORS: Dict[int, str] = {
-    11: 'dirt',
-    17: 'common',
-    23: 'dirt',
-    25: 'rare',
-    29: 'epic',
-    31: 'legendary',
-    35: 'rare',
-    41: 'epic',
-    44: 'legendary',
-    99: 'mythic',
+    11:  'dirt',
+    17:  'common',
+    23:  'dirt',
+    25:  'rare',
+    29:  'epic',
+    31:  'legendary',
+    35:  'rare',
+    41:  'epic',
+    44:  'legendary',
+    95:  'Common',
+    98:  'mythic',
+    149: 'divine',
 }
 
 # Block spawn rates by stage range
-# Format: (min_stage, max_stage): {'dirt': %, 'common': %, 'rare': %, 'epic': %, 'legendary': %, 'mythic': %}
+# Format: (min_stage, max_stage): {'dirt': %, 'common': %, 'rare': %, 'epic': %, 'legendary': %, 'mythic': %, 'divine': %}
 # Note: Percentages represent spawn weights, not absolute probabilities
 # The sum of all non-zero values per row represents the total spawn pool
 
@@ -48,6 +51,7 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 0.00,
         'legendary': 0.00,
         'mythic': 0.00,
+        'divine': 0.00,
     },
     (3, 4): {
         'dirt': 25.40,
@@ -56,6 +60,7 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 0.00,
         'legendary': 0.00,
         'mythic': 0.00,
+        'divine': 0.00,
     },
     (5, 5): {
         'dirt': 25.52,
@@ -64,6 +69,7 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 0.00,
         'legendary': 0.00,
         'mythic': 0.00,
+        'divine': 0.00,
     },
     (6, 9): {
         'dirt': 22.97,
@@ -72,6 +78,7 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 10.00,
         'legendary': 0.00,
         'mythic': 0.00,
+        'divine': 0.00,
     },
     (10, 11): {
         'dirt': 23.41,
@@ -80,6 +87,7 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 11.11,
         'legendary': 0.00,
         'mythic': 0.00,
+        'divine': 0.00,
     },
     (12, 14): {
         'dirt': 21.74,
@@ -88,6 +96,7 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 10.32,
         'legendary': 7.14,
         'mythic': 0.00,
+        'divine': 0.00,
     },
     (15, 19): {
         'dirt': 21.27,
@@ -96,6 +105,7 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 11.54,
         'legendary': 7.69,
         'mythic': 0.00,
+        'divine': 0.00,
     },
     (20, 24): {
         'dirt': 19.50,
@@ -104,6 +114,7 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 12.34,
         'legendary': 8.64,
         'mythic': 5.00,
+        'divine': 0.00,
     },
     (25, 29): {
         'dirt': 18.47,
@@ -112,6 +123,7 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 12.06,
         'legendary': 10.56,
         'mythic': 5.00,
+        'divine': 0.00,
     },
     (30, 49): {
         'dirt': 18.10,
@@ -120,6 +132,7 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 11.88,
         'legendary': 11.88,
         'mythic': 5.00,
+        'divine': 0.00,
     },
     (50, 75): {
         'dirt': 16.87,
@@ -128,6 +141,7 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 13.77,
         'legendary': 11.81,
         'mythic': 5.56,
+        'divine': 1.00,
     },
     (76, float('inf')): {  # 75+ (stages above 75)
         'dirt': 16.81,
@@ -136,11 +150,12 @@ SPAWN_RATES_BY_STAGE: Dict[Tuple[int, int], Dict[str, float]] = {
         'epic': 11.76,
         'legendary': 11.76,
         'mythic': 5.88,
+        'divine': 1.50,
     },
 }
 
 # Block types in order of rarity
-BLOCK_TYPES = ['dirt', 'common', 'rare', 'epic', 'legendary', 'mythic']
+BLOCK_TYPES = ['dirt', 'common', 'rare', 'epic', 'legendary', 'mythic', 'divine']
 
 # Stage ranges for display purposes
 STAGE_RANGES = [
@@ -190,6 +205,7 @@ def get_spawn_rates_for_stage(stage: int, ignore_boss: bool = False) -> Dict[str
             'epic': 100.0 if boss_block == 'epic' else 0.0,
             'legendary': 100.0 if boss_block == 'legendary' else 0.0,
             'mythic': 100.0 if boss_block == 'mythic' else 0.0,
+            'divine': 100.0 if boss_block == 'divine' else 0.0,
         }
     
     for (min_stage, max_stage), rates in SPAWN_RATES_BY_STAGE.items():
@@ -273,6 +289,8 @@ def get_available_blocks_at_stage(stage: int) -> list:
         ['dirt', 'common']
         >>> get_available_blocks_at_stage(20)
         ['dirt', 'common', 'rare', 'epic', 'legendary', 'mythic']
+        >>> get_available_blocks_at_stage(50)
+        ['dirt', 'common', 'rare', 'epic', 'legendary', 'mythic', 'divine']
     """
     rates = get_spawn_rates_for_stage(stage)
     return [block for block in BLOCK_TYPES if rates.get(block, 0) > 0]
