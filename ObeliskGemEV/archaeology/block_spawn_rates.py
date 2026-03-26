@@ -402,7 +402,7 @@ def print_spawn_table():
     """Print a formatted spawn rate table (for debugging/documentation)."""
     print("Block Spawn Chance by Stage")
     print("=" * 80)
-    header = f"{'Stages':<10} {'Dirt':>8} {'Common':>8} {'Rare':>8} {'Epic':>8} {'Legend':>8} {'Mythic':>8}"
+    header = f"{'Stages':<10} {'Dirt':>8} {'Common':>8} {'Rare':>8} {'Epic':>8} {'Legend':>8} {'Mythic':>8} {'Divine':>8}"
     print(header)
     print("-" * 80)
     
