@@ -38,7 +38,7 @@ SAVE_DIR = get_save_dir()
 SAVE_FILE = SAVE_DIR / "archaeology_save.json"
 
 # Skill point caps (game rules)
-# STR/AGI can be allocated up to 50, PER/INT/LUC up to 25.
+# STR/AGI can be allocated up to 50, PER/INT/LUC up to 25, DIV up to 10.
 SKILL_POINT_CAPS = {
     "strength":    50,
     "agility":     50,
@@ -394,7 +394,7 @@ class ArchaeologySimulatorWindow:
             'all_mod_chance': 0.002,
             'one_hit_chance': 0.0004,
         },
-           'divinity': {
+        'divinity': {
             'flat_damage': 2,
             'super_crit_chance': 0.02,
             'crosshair_auto-tap': 0.02,
