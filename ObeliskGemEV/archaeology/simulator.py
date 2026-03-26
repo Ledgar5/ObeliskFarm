@@ -704,7 +704,7 @@ class ArchaeologySimulatorWindow:
             'display_name': 'Exp 2x/Caps +5',
         },
         
-         # Divine Fragment Upgrades (red)
+         # Divine Fragment Upgrades (yellow)
         'str_skill_buff': {
             'percent_damage': 0.01,  # +1%
             'crit_damage': 0.01,     # +1%
@@ -753,7 +753,7 @@ class ArchaeologySimulatorWindow:
         'epic': '#9932CC',      # Dark Orchid (Purple)
         'legendary': '#6B5200', # Much darker gold (more contrast)
         'mythic': '#FF4500',    # Orange Red
-        'divine': '#ff4040',    # Red
+        'divine': '#ffff88',    # Yellow
     }
     
     # Game constants
