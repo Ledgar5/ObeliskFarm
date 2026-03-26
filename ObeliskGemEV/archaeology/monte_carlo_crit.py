@@ -66,7 +66,7 @@ class MonteCarloCritSimulator:
         self.persistent_quake_state = None
     
     def get_ability_cooldown_multiplier(self, misc_card_level: int = 0) -> float:
-        """Get ability cooldown multiplier from misc card: Normal = -3%, Gilded = -6%, Polychrome = -10%"""
+        """Get ability cooldown multiplier from misc card: Normal = -3%, Gilded = -6%, Polychrome = -10%, Infernal = -13.6%"""
         if misc_card_level == 1:
             return 0.97  # -3%
         elif misc_card_level == 2:
@@ -259,7 +259,7 @@ class MonteCarloCritSimulator:
         max_stage_reached = starting_floor  # Track the maximum stage reached during the run
         
         # Fragment tracking
-        fragments_by_type = {'common': 0.0, 'rare': 0.0, 'epic': 0.0, 'legendary': 0.0, 'mythic': 0.0}
+        fragments_by_type = {'common': 0.0, 'rare': 0.0, 'epic': 0.0, 'legendary': 0.0, 'mythic': 0.0, 'divine': 0.0}
         fragment_mult = stats.get('fragment_mult', 1.0)
         loot_mod_chance = stats.get('loot_mod_chance', 0)
         loot_mod_multiplier = stats.get('loot_mod_multiplier', 3.5)
@@ -599,7 +599,7 @@ class MonteCarloCritSimulator:
             block_breakdown = None
             if track_blocks:
                 # Build a stable, UI-friendly structure.
-                ordered_types = ['dirt', 'common', 'rare', 'epic', 'legendary', 'mythic']
+                ordered_types = ['dirt', 'common', 'rare', 'epic', 'legendary', 'mythic', 'divine']
                 by_type = {}
                 total_time = float(sum(block_hits_by_type.values()))
                 for bt in ordered_types:
