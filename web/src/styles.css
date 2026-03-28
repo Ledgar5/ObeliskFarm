@@ -44,7 +44,7 @@ body {
 body {
   margin: 0;
   font-family: var(--sans);
-  background: #f00000;
+  background: #F0F0F0;
   color: var(--text);
 }
 
