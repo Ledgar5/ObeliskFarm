@@ -126,6 +126,10 @@ FRAGMENT_UPGRADE_COSTS = {
     'exp_stat_cap_m1': [  # Exp Gain 2.00x / All Stat Point Caps +5
         5000.00,  # 1
     ],
+    # Divine Fragment Upgrades
+    'damage_apen_m1': [  # Strength Skill Buff
+        10.00, #1
+    ],
 }
 
 
