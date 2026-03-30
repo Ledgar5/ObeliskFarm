@@ -124,7 +124,7 @@ type McLogEntry = {
         tertiary?: number;
         /** Frag mode: XP/h for tertiary display. */
         xpPerHour?: number;
-        dist: { strength: number; agility: number; perception: number; intellect: number; luck: number };
+        dist: { strength: number; agility: number; perception: number; intellect: number; luck: number; divinity: number };
       }>;
     };
   };
@@ -182,7 +182,7 @@ function defaultBuild(): ArchBuild {
     goalStage: 1,
     unlockedStage: 1,
     archLevel: 20,
-    skillPoints: { strength: 0, agility: 0, perception: 0, intellect: 0, luck: 0 },
+    skillPoints: { strength: 0, agility: 0, perception: 0, intellect: 0, luck: 0, divinity: 0},
     gemUpgrades: { stamina: 0, xp: 0, fragment: 0 },
     fragmentUpgradeLevels: {},
     blockCards,
@@ -217,7 +217,7 @@ function formatDurationMinSec(sec: number): string {
 }
 
 function normalizeSkillsToTotal(sp: Record<Skill, number>, total: number): Record<Skill, number> {
-  const order: Skill[] = ["luck", "intellect", "perception", "agility", "strength"];
+  const order: Skill[] = ["divinity", "luck", "intellect", "perception", "agility", "strength"];
   const out: Record<Skill, number> = { ...sp };
   let sum = (Object.values(out) as number[]).reduce((a, b) => a + clampInt(Number(b ?? 0), 0, 999), 0);
   let diff = sum - total;
@@ -321,7 +321,7 @@ export function ArchSim() {
   const [gemCardSkillNextRefId, setGemCardSkillNextRefId] = useState<string | null>(null);
   const [gemFragNextRunning, setGemFragNextRunning] = useState(false);
   const [gemFragNextProgress, setGemFragNextProgress] = useState<string | null>(null);
-  type GemFragCostClass = "gem" | "skill" | "common" | "rare" | "epic" | "legendary" | "mythic";
+  type GemFragCostClass = "gem" | "skill" | "common" | "rare" | "epic" | "legendary" | "mythic" | "divine";
   const [gemFragNextResults, setGemFragNextResults] = useState<Array<{
     source: "gem" | "card" | "skill" | "fragment";
     costClass: GemFragCostClass;
@@ -337,13 +337,13 @@ export function ArchSim() {
   }> | null>(null);
 
   const COLLAPSED_FRAGMENT_GROUPS_KEY = "obeliskfarm:web:arch:collapsedFragmentGroups";
-  type FragmentGroupType = "common" | "rare" | "epic" | "legendary" | "mythic";
+  type FragmentGroupType = "common" | "rare" | "epic" | "legendary" | "mythic" | "divine";
   const [collapsedFragmentGroups, setCollapsedFragmentGroups] = useState<Set<FragmentGroupType>>(() => {
     try {
       const raw = localStorage.getItem(COLLAPSED_FRAGMENT_GROUPS_KEY);
       if (raw) {
         const arr = JSON.parse(raw) as unknown;
-        if (Array.isArray(arr) && arr.every((x) => ["common", "rare", "epic", "legendary", "mythic"].includes(x))) return new Set(arr as FragmentGroupType[]);
+        if (Array.isArray(arr) && arr.every((x) => ["common", "rare", "epic", "legendary", "mythic", "divine"].includes(x))) return new Set(arr as FragmentGroupType[]);
       }
     } catch {
       // ignore
@@ -671,13 +671,22 @@ export function ArchSim() {
           {
             heading: "Per point (actual)",
             lines: [
-              `Crit Chance: +${fmtPct(SKILL_BONUSES.luck.crit_chance ?? 0, 0)}%`,
+              <>Damage: +{strFlatActual} flat{strFlatActual !== strFlatBase ? boostedByFrag : null}</>
               `All Mod Chances (EXP, Loot, Speed, Stamina): +${fmtPct(SKILL_BONUSES.luck.all_mod_chance ?? 0)}%`,
               "Golden crosshair (active gameplay) is not modeled here.",
             ],
           },
         ],
       },
+      divinity: {
+        title: "DIV",
+        sections: [
+          {
+             heading: "Per point (actual)",
+            lines: [
+              <>Damage: +{strFlatActual} flat{strFlatActual !== strFlatBase ? boostedByFrag : null}</>,
+              `Super Crit Chance: +${fmtPct(divCritBase, 0)}%`,
+              " Crosshair Auto-Tap (active gameplay) is not modeled here.",
     };
   }, [build.fragmentUpgradeLevels]);
 
@@ -925,7 +934,7 @@ export function ArchSim() {
     mcCalibrating,
   ]);
 
-  const skills = useMemo(() => ["strength", "agility", "perception", "intellect", "luck"] as const, []);
+  const skills = useMemo(() => ["strength", "agility", "perception", "intellect", "luck", "divinity"] as const, []);
 
   function sampleDirichletInteger(args: {
     numPoints: number;
@@ -1089,6 +1098,7 @@ export function ArchSim() {
       perception: Math.min(archLevel, getSkillPointCap(build, "perception")),
       intellect: Math.min(archLevel, getSkillPointCap(build, "intellect")),
       luck: Math.min(archLevel, getSkillPointCap(build, "luck")),
+      divinity: Math.min(archLevel, getSkillPointCap(build, "divinity")),
     };
 
     const baseSamples = Math.max(500, Math.max(1, archLevel) * 20);
@@ -1134,7 +1144,7 @@ export function ArchSim() {
     let completed = 0;
 
     const submitCandidate = async (dist: number[], simN: number, seed: number) => {
-      const b2: ArchBuild = { ...build, skillPoints: { strength: dist[0], agility: dist[1], perception: dist[2], intellect: dist[3], luck: dist[4] } };
+      const b2: ArchBuild = { ...build, skillPoints: { strength: dist[0], agility: dist[1], perception: dist[2], intellect: dist[3], luck: dist[4], divinity: dist[5] } };
       const stats2 = getTotalStats(b2);
       if (mode === "frag") {
         if (useSignificance) {
@@ -1252,8 +1262,8 @@ export function ArchSim() {
       };
     }
 
-    function candToDistMap(dist: number[]): { strength: number; agility: number; perception: number; intellect: number; luck: number } {
-      return { strength: dist[0] ?? 0, agility: dist[1] ?? 0, perception: dist[2] ?? 0, intellect: dist[3] ?? 0, luck: dist[4] ?? 0 };
+    function candToDistMap(dist: number[]): { strength: number; agility: number; perception: number; intellect: number; luck: number; divinity: number } {
+      return { strength: dist[0] ?? 0, agility: dist[1] ?? 0, perception: dist[2] ?? 0, intellect: dist[3] ?? 0, luck: dist[4] ?? 0, divinity: dist[5] ?? 0 };
     }
 
     function makeTieBreakReport(cands: Cand[], best: Cand): TieBreakReport {
@@ -1347,7 +1357,7 @@ export function ArchSim() {
         let sumFphSq = 0;
         let sampleCount = 0;
         const sumFragsByType: Record<string, number> = { common: 0, rare: 0, epic: 0, legendary: 0, mythic: 0 };
-        const FRAG_TYPES_STAGE = ["common", "rare", "epic", "legendary", "mythic"] as const;
+        const FRAG_TYPES_STAGE = ["common", "rare", "epic", "legendary", "mythic", "divine"] as const;
         const staminaAtStageSum: Record<number, number> = {};
         const staminaAtStageSumSq: Record<number, number> = {};
         const staminaAtStageCount: Record<number, number> = {};
@@ -1592,7 +1602,7 @@ export function ArchSim() {
             if (cancelRef.current.cancelled) throw new Error("cancelled");
             const dist = refineAroundAnchor({ anchor: anchors[a]!.dist, numPoints: archLevel, caps, radius, requireStr, rng });
             const p = (async () => {
-              const b2: ArchBuild = { ...build, skillPoints: { strength: dist[0], agility: dist[1], perception: dist[2], intellect: dist[3], luck: dist[4] } };
+              const b2: ArchBuild = { ...build, skillPoints: { strength: dist[0], agility: dist[1], perception: dist[2], intellect: dist[3], luck: dist[4], divinity: dist[5] } };
               const stats2 = getTotalStats(b2);
               const seedRef = seedBase + 100_000 + a * 100 + j;
               if (mode === "frag") {
@@ -1781,7 +1791,7 @@ export function ArchSim() {
 
       const bestBuild: ArchBuild = {
         ...build,
-        skillPoints: { strength: best.dist[0], agility: best.dist[1], perception: best.dist[2], intellect: best.dist[3], luck: best.dist[4] },
+        skillPoints: { strength: best.dist[0], agility: best.dist[1], perception: best.dist[2], intellect: best.dist[3], luck: best.dist[4], divinity: best.dist[5] },
       };
       const bestStats = getTotalStats(bestBuild);
 
@@ -1807,8 +1817,8 @@ export function ArchSim() {
       let sumFph = 0;
       let sumFphSq = 0;
       let sampleCount = 0;
-      const sumFragsByTypeRef: Record<string, number> = { common: 0, rare: 0, epic: 0, legendary: 0, mythic: 0 };
-      const FRAG_TYPES_REF = ["common", "rare", "epic", "legendary", "mythic"] as const;
+      const sumFragsByTypeRef: Record<string, number> = { common: 0, rare: 0, epic: 0, legendary: 0, mythic: 0, divine: 0 };
+      const FRAG_TYPES_REF = ["common", "rare", "epic", "legendary", "mythic", "divine"] as const;
       const staminaAtStageSumRef: Record<number, number> = {};
       const staminaAtStageSumSqRef: Record<number, number> = {};
       const staminaAtStageCountRef: Record<number, number> = {};
@@ -2039,7 +2049,7 @@ export function ArchSim() {
     const bestStats = getTotalStats(currentBuild);
     const options = { use_crit: true, enrage_enabled: currentBuild.enrageEnabled, flurry_enabled: currentBuild.flurryEnabled, quake_enabled: currentBuild.quakeEnabled };
     const cardCfg = { blockCards: currentBuild.blockCards, polychromeBonus: getPolychromeBonus() };
-    const FRAG_TYPES_REF = ["common", "rare", "epic", "legendary", "mythic"] as const;
+    const FRAG_TYPES_REF = ["common", "rare", "epic", "legendary", "mythic", "divine"] as const;
     try {
       setBuildMcProgress(`Final sims (0/${N})…`);
       const chunkSize = clampInt(Math.trunc(N / Math.max(1, pool.size * 4)), 10, 500);
@@ -2060,7 +2070,7 @@ export function ArchSim() {
         sumFph = 0,
         sumFphSq = 0;
       let sampleCount = 0;
-      const sumFragsByTypeRef: Record<string, number> = { common: 0, rare: 0, epic: 0, legendary: 0, mythic: 0 };
+      const sumFragsByTypeRef: Record<string, number> = { common: 0, rare: 0, epic: 0, legendary: 0, mythic: 0, divine: 0 };
       const staminaAtStageSumRef: Record<number, number> = {};
       const staminaAtStageSumSqRef: Record<number, number> = {};
       const staminaAtStageCountRef: Record<number, number> = {};
@@ -2407,6 +2417,7 @@ export function ArchSim() {
         perception: winnerDist.perception ?? 0,
         intellect: winnerDist.intellect ?? 0,
         luck: winnerDist.luck ?? 0,
+        divinity: winnerDist.divinity ?? 0,
       },
     };
     const GEM_KEYS: ArchGemUpgradeKey[] = ["stamina", "xp", "fragment"];
@@ -2567,6 +2578,7 @@ export function ArchSim() {
         perception: winnerDist.perception ?? 0,
         intellect: winnerDist.intellect ?? 0,
         luck: winnerDist.luck ?? 0,
+        divinity: winnerDist.divinity ?? 0,
       },
     };
     const GEM_KEYS: ArchGemUpgradeKey[] = ["stamina", "xp", "fragment"];
@@ -2614,7 +2626,7 @@ export function ArchSim() {
     const options = { use_crit: true, enrage_enabled: baseBuild.enrageEnabled, flurry_enabled: baseBuild.flurryEnabled, quake_enabled: baseBuild.quakeEnabled };
     const seedBase = (Date.now() & 0x7fffffff) >>> 0;
     const N_SIMS = 3000;
-    type CostClass = "gem" | "skill" | "common" | "rare" | "epic" | "legendary" | "mythic";
+    type CostClass = "gem" | "skill" | "common" | "rare" | "epic" | "legendary" | "mythic" | "divine";
     type GemFragResult = { source: "gem" | "card" | "skill" | "fragment"; costClass: CostClass; key: string; displayName: string; meanFrags: number; growthPct: number; cost: number | undefined; perCost: number; allFragmentsGrowthPct: number; perCostAllFragments: number; significant: boolean };
     const results: GemFragResult[] = [];
     try {
@@ -3031,14 +3043,17 @@ export function ArchSim() {
           ? "sprites/archaeology/fragmentepic.png"
           : t === "legendary"
             ? "sprites/archaeology/fragmentlegendary.png"
-            : "sprites/archaeology/fragmentmythic.png";
+            : t === "mythic"
+              ? "sprites/archaeology/fragmentmythic.png"
+              : t === "divine"
+                ? "sprites/archaeology/fragmentdivine.png"
   }
 
   function renderTieBreakBars(tb: NonNullable<TieBreakReport>): ReactNode {
     if (!tb?.top3?.length) return null;
     // Match desktop visual: grouped horizontal bars with legend outside plot.
     const rows = tb.top3;
-    const FRAG_ORDER_BAR: readonly BlockType[] = ["common", "rare", "epic", "legendary", "mythic"];
+    const FRAG_ORDER_BAR: readonly BlockType[] = ["common", "rare", "epic", "legendary", "mythic", "divine"];
     type Series = {
       key: string;
       label: string;
@@ -3136,6 +3151,7 @@ export function ArchSim() {
         `PER:${d.perception ?? 0}`,
         `INT:${d.intellect ?? 0}`,
         `LCK:${d.luck ?? 0}`,
+        `DIV:${d.divinity ?? 0}`,
       ];
       return `${r.label}: ${parts.join(" | ")}`;
     };
@@ -3421,11 +3437,11 @@ export function ArchSim() {
             <div className="small" style={{ marginBottom: 8 }}>
               Spend your <span className="mono">Arch level</span> points here.
             </div>
-            {(["strength", "agility", "perception", "intellect", "luck"] as const).map((statKey) => {
+            {(["strength", "agility", "perception", "intellect", "luck", "divinity"] as const).map((statKey) => {
               const cap = getSkillPointCap(build, statKey);
               const v = build.skillPoints[statKey];
               const short =
-                statKey === "strength" ? "STR" : statKey === "agility" ? "AGI" : statKey === "perception" ? "PER" : statKey === "intellect" ? "INT" : "LCK";
+                statKey === "strength" ? "STR" : statKey === "agility" ? "AGI" : statKey === "perception" ? "PER" : statKey === "intellect" ? "INT" : statKey === "luck" ? "LCK" :  statKey === "divinity" ? "DIV" : ;
               return (
                 <div key={statKey} className="row" style={{ marginBottom: 8 }}>
                   <div className="label" style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -3667,7 +3683,7 @@ export function ArchSim() {
                     checked={build.level1TributeEnabled ?? false}
                     onChange={(e) => setBuild((s) => ({ ...s, level1TributeEnabled: e.target.checked }))}
                     aria-label="Level 1 Tribute enabled"
-                  />
+                />
                 </label>
                 {build.level1TributeEnabled ? (
                   <>
@@ -3681,8 +3697,30 @@ export function ArchSim() {
                       value={build.mythicChestsOwned ?? 0}
                       onChange={(e) => setBuild((s) => ({ ...s, mythicChestsOwned: clampInt(Number(e.target.value), 0, 999) }))}
                       style={{ width: 56 }}
-                    />
-                  </>
+                />
+                <span style={{ color: "var(--text, inherit)" }}>
+                  Ascension 1
+                  <Tooltip
+                    content={{
+                      title: "Ascension 1",
+                      lines: ["Unlocks Divinity, new upgrades, and Divine block appearance."],
+                      }}
+                  />
+                </span>
+                <label style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
+                  <input
+                    type="checkbox"
+                    checked={build.ascension1Enabled ?? false}
+                  onChange={(e) =>
+                    setBuild((s) => ({
+                      ...s,
+                      ascension1Enabled: e.target.checked,
+                    }))
+                  }
+                  aria-label="Ascension 1 enabled"
+                />
+            </label>
+                </>
                 ) : null}
               </div>
               <div
@@ -4167,7 +4205,7 @@ export function ArchSim() {
                         const scale = 1000;
                         const heatPct = (v: number, lo: number, hi: number) =>
                           hi > lo ? Math.max(0, Math.min(100, ((v - lo) / (hi - lo)) * 100)) : 50;
-                        const classes: GemFragCostClass[] = ["gem", "skill", "common", "rare", "epic", "legendary", "mythic"];
+                        const classes: GemFragCostClass[] = ["gem", "skill", "common", "rare", "epic", "legendary", "mythic", "divine"];
                         const byClass = (cls: GemFragCostClass) => rs.filter((r) => r.costClass === cls);
                         const minMax = (cls: GemFragCostClass, getVal: (r: (typeof rs)[number]) => number) => {
                           const vals = byClass(cls).map(getVal).filter((v) => Number.isFinite(v));
@@ -4265,7 +4303,7 @@ export function ArchSim() {
             defaultExpanded={false}
           >
             <div className="panel fragmentUpgradesPanel" style={{ background: "var(--tier2)" }}>
-              {(["common", "rare", "epic", "legendary", "mythic"] as const).map((ct) => {
+              {(["common", "rare", "epic", "legendary", "mythic", "divine"] as const).map((ct) => {
               const entries = fragmentGroups[ct] ?? [];
               const color = BLOCK_COLORS[ct];
               const icon = getFragIconPath(ct);
@@ -4903,7 +4941,7 @@ export function ArchSim() {
                           <span className="mono">{mcSettings.targetFrag.toUpperCase()}</span>
                         </div>
                         <div className="fragToggleRow">
-                          {(["common", "rare", "epic", "legendary", "mythic"] as const).map((t) => {
+                          {(["common", "rare", "epic", "legendary", "mythic", "divine"] as const).map((t) => {
                             const icon =
                               t === "common"
                                 ? "sprites/archaeology/fragmentcommon.png"
@@ -4913,7 +4951,11 @@ export function ArchSim() {
                                     ? "sprites/archaeology/fragmentepic.png"
                                     : t === "legendary"
                                       ? "sprites/archaeology/fragmentlegendary.png"
-                                      : "sprites/archaeology/fragmentmythic.png";
+                                      : t === "mythic"
+                                        ? "sprites/archaeology/fragmentmythic.png"
+                                        : t === "divine"
+                                          ? "sprites/archaeology/fragmentdivine.png";
+          
                             const active = mcSettings.targetFrag === t;
                             const tierColor = BLOCK_COLORS[t];
                             return (
@@ -5304,7 +5346,7 @@ export function ArchSim() {
                       </thead>
                       <tbody>
                         {(() => {
-                          const blockTypeOrder = ["dirt", "common", "rare", "epic", "legendary", "mythic"] as const;
+                          const blockTypeOrder = ["dirt", "common", "rare", "epic", "legendary", "mythic", "divine"] as const;
                           const entries = Object.entries(openLog.metrics.blockBreakdown!.by_type)
                             .filter(([, v]) => v && (v.blocks_destroyed_per_run >= 0.01 || v.time_seconds_per_run >= 0.5))
                             .map(([key, v]) => {
@@ -5350,8 +5392,8 @@ export function ArchSim() {
                 <div style={{ marginTop: 12, display: "grid", gap: 10 }}>
                   {(() => {
                     const b = openLog.build;
-                    const skills = ["strength", "agility", "perception", "intellect", "luck"] as const;
-                    const abbr: Record<(typeof skills)[number], string> = { strength: "STR", agility: "AGI", perception: "PER", intellect: "INT", luck: "LCK" };
+                    const skills = ["strength", "agility", "perception", "intellect", "luck", "divinity"] as const;
+                    const abbr: Record<(typeof skills)[number], string> = { strength: "STR", agility: "AGI", perception: "PER", intellect: "INT", luck: "LCK", divinity: "DIV" };
                     const skillTitle = (
                       <span
                         style={{
@@ -5406,7 +5448,7 @@ export function ArchSim() {
                               </span>
                             </div>
                           ),
-                          ariaLabel: `STR ${b.skillPoints.strength ?? 0} AGI ${b.skillPoints.agility ?? 0} PER ${b.skillPoints.perception ?? 0} INT ${b.skillPoints.intellect ?? 0} LCK ${b.skillPoints.luck ?? 0} — ${distTitle}`,
+                          ariaLabel: `STR ${b.skillPoints.strength ?? 0} AGI ${b.skillPoints.agility ?? 0} PER ${b.skillPoints.perception ?? 0} INT ${b.skillPoints.intellect ?? 0} LCK ${b.skillPoints.luck ?? 0} DIV ${b.skillPoints.divinity ?? 0} — ${distTitle}`,
                           xLabel:
                             openLog.mc.objective === "stage"
                               ? "Max Stage Reached"
@@ -5545,7 +5587,7 @@ export function ArchSim() {
                                 </>
                               ) : null}
                               <div className="mono" style={{ marginTop: 4 }}>
-                                STR {c.dist.strength ?? 0} • AGI {c.dist.agility ?? 0} • PER {c.dist.perception ?? 0} • INT {c.dist.intellect ?? 0} • LCK {c.dist.luck ?? 0}
+                                STR {c.dist.strength ?? 0} • AGI {c.dist.agility ?? 0} • PER {c.dist.perception ?? 0} • INT {c.dist.intellect ?? 0} • LCK {c.dist.luck ?? 0} • DIV {c.dist.divinity ?? 0}
                               </div>
                             </li>
                           ))}
