@@ -122,6 +122,7 @@ export function getTotalStats(build: ArchBuild): ArchStats {
   const intPts = build.skillPoints.intellect;
   const perPts = build.skillPoints.perception;
   const luckPts = build.skillPoints.luck;
+  const divPts = build.skillPoints.divinity;
 
   // Base state (matches reset_to_level1)
   const base_damage = 10;
@@ -408,7 +409,7 @@ export function calculateXpPerRun(build: ArchBuild, stats: ArchStats, startingFl
 
 export function calculateFragmentsPerRun(build: ArchBuild, stats: ArchStats, startingFloor: number): Record<Exclude<BlockType, "dirt">, number> {
   const floors = calculateFloorsPerRun(build, stats, startingFloor);
-  const out: Record<Exclude<BlockType, "dirt">, number> = { common: 0, rare: 0, epic: 0, legendary: 0, mythic: 0 };
+  const out: Record<Exclude<BlockType, "dirt">, number> = { common: 0, rare: 0, epic: 0, legendary: 0, mythic: 0, divine: 0 };
   if (floors <= 0) return out;
 
   const fragmentMult = stats.fragment_mult;
