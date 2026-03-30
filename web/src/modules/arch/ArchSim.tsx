@@ -671,7 +671,7 @@ export function ArchSim() {
           {
             heading: "Per point (actual)",
             lines: [
-              <>Damage: +{strFlatActual} flat{strFlatActual !== strFlatBase ? boostedByFrag : null}</>
+              `Crit Chance: +${fmtPct(SKILL_BONUSES.luck.crit_chance ?? 0, 0)}%`,
               `All Mod Chances (EXP, Loot, Speed, Stamina): +${fmtPct(SKILL_BONUSES.luck.all_mod_chance ?? 0)}%`,
               "Golden crosshair (active gameplay) is not modeled here.",
             ],
@@ -686,7 +686,11 @@ export function ArchSim() {
             lines: [
               <>Damage: +{strFlatActual} flat{strFlatActual !== strFlatBase ? boostedByFrag : null}</>,
               `Super Crit Chance: +${fmtPct(divCritBase, 0)}%`,
-              " Crosshair Auto-Tap (active gameplay) is not modeled here.",
+              "Crosshair Auto-Tap (active gameplay) is not modeled here.",
+            ],
+          }, 
+        ],
+      },
     };
   }, [build.fragmentUpgradeLevels]);
 
