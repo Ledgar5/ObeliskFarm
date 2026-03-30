@@ -26,6 +26,7 @@ export const SKILL_BONUSES: Record<
     armor_pen_mult: number;
     all_mod_chance: number;
     one_hit_chance: number;
+    gold_crosshair: number;
     super_crit_chance: number;
     crosshair_auto_tap: number;
   }>
