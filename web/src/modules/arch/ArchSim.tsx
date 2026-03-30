@@ -3050,7 +3050,8 @@ export function ArchSim() {
             : t === "mythic"
               ? "sprites/archaeology/fragmentmythic.png"
               : t === "divine"
-                : "sprites/archaeology/fragmentdivine.png";
+                ? "sprites/archaeology/fragmentdivine.png"
+                : "";
   }
 
   function renderTieBreakBars(tb: NonNullable<TieBreakReport>): ReactNode {
@@ -3445,7 +3446,7 @@ export function ArchSim() {
               const cap = getSkillPointCap(build, statKey);
               const v = build.skillPoints[statKey];
               const short =
-                statKey === "strength" ? "STR" : statKey === "agility" ? "AGI" : statKey === "perception" ? "PER" : statKey === "intellect" ? "INT" : statKey === "luck" ? "LCK" :  statKey === "divinity" ? "DIV";
+                statKey === "strength" ? "STR" : statKey === "agility" ? "AGI" : statKey === "perception" ? "PER" : statKey === "intellect" ? "INT" : statKey === "luck" ? "LCK" : "DIV";
               return (
                 <div key={statKey} className="row" style={{ marginBottom: 8 }}>
                   <div className="label" style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -4958,7 +4959,8 @@ export function ArchSim() {
                                       : t === "mythic"
                                         ? "sprites/archaeology/fragmentmythic.png"
                                         : t === "divine"
-                                          : "sprites/archaeology/fragmentdivine.png";
+                                          ? "sprites/archaeology/fragmentdivine.png"
+                                          : "";
                             const active = mcSettings.targetFrag === t;
                             const tierColor = BLOCK_COLORS[t];
                             return (
