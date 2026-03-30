@@ -113,7 +113,7 @@ export const FRAGMENT_UPGRADES: Record<
   ability_stam_m1: { ability_instacharge: 0.003, max_stamina: 4, max_level: 20, stage_unlock: 32, cost_type: "mythic", display_name: "Ability Instacharge +0.30%, Max Stamina +4" },
   exp_stat_cap_m1: { xp_bonus_mult: 2.0, all_stat_cap: 5, max_level: 1, stage_unlock: 42, cost_type: "mythic", display_name: "Exp Gain 2.00x, All Stat Point Caps +5" },
 
-  str_skill_buff: { percent_damage_skill: 0.01, crit_damage_skill: 0.01, max_level: 1, stage_unlock: 50, cost_type: "divine", display_name: "Strength Skill Buff: Damage: 1%, Crit Damage 1%" },
+  str_skill_buff_2: { percent_damage_skill: 0.01, crit_damage_skill: 0.01, max_level: 1, stage_unlock: 50, cost_type: "divine", display_name: "Strength Skill Buff: Damage: 1%, Crit Damage 1%" },
   
 };
 
