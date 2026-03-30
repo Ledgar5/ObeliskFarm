@@ -6,6 +6,7 @@ export const SKILL_POINT_CAPS_BASE: Record<Skill, number> = {
   perception: 25,
   intellect: 25,
   luck: 25,
+  divinity: 10,
 };
 
 export const SKILL_BONUSES: Record<
@@ -31,7 +32,8 @@ export const SKILL_BONUSES: Record<
   agility: { max_stamina: 5, crit_chance: 0.01, speed_mod_chance: 0.002 },
   perception: { fragment_gain: 0.04, loot_mod_chance: 0.003, armor_pen: 2 },
   intellect: { xp_bonus: 0.05, exp_mod_chance: 0.003, armor_pen_mult: 0.03 },
-  luck: { crit_chance: 0.02, all_mod_chance: 0.002, one_hit_chance: 0.0004 },
+  luck: { crit_chance: 0.02, all_mod_chance: 0.002, gold_crosshair: 0.005 },
+  divinity: { flat_damage: 2, super_crit_chance: 0.02, crosshair_auto_tap: 0.02 },
 };
 
 export const ENRAGE_CHARGES = 5;
@@ -128,6 +130,7 @@ export const BLOCK_COLORS: Record<BlockType, string> = {
   epic: "#9932CC",
   legendary: "#6B5200",
   mythic: "#FF4500",
+  divinity: "",
 };
 
 export const SLOTS_PER_FLOOR = 24;
