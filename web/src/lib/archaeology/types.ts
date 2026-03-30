@@ -1,5 +1,5 @@
-export type Skill = "strength" | "agility" | "perception" | "intellect" | "luck";
-export type BlockType = "dirt" | "common" | "rare" | "epic" | "legendary" | "mythic";
+export type Skill = "strength" | "agility" | "perception" | "intellect" | "luck" | "divinity";
+export type BlockType = "dirt" | "common" | "rare" | "epic" | "legendary" | "mythic" | "divine";
 export type BlockTier = 1 | 2 | 3 | 4;
 export type CardLevel = 0 | 1 | 2 | 3;
 
