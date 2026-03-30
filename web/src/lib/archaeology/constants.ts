@@ -136,7 +136,7 @@ export const BLOCK_COLORS: Record<BlockType, string> = {
   epic: "#9932CC",
   legendary: "#6B5200",
   mythic: "#FF4500",
-  divinity: "#ffff88",
+  divine: "#ffff88",
 };
 
 export const SLOTS_PER_FLOOR = 24;
