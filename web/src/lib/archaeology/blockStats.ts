@@ -21,7 +21,7 @@ export type BlockData = {
   armor_150?: number;
 };
 
-export const BLOCK_TYPES: BlockType[] = ["dirt", "common", "rare", "epic", "legendary", "mythic"];
+export const BLOCK_TYPES: BlockType[] = ["dirt", "common", "rare", "epic", "legendary", "mythic", "divine"];
 
 /**
  * Sprite path for block cards / breakdown rows. Tier 3 PNGs are not bundled for most rarities (only t1/t2/t4);
@@ -47,36 +47,40 @@ export function getBlockArmorAtFloor(block: BlockData, floor: number): number {
 
 export const BLOCK_DATA: BlockData[] = [
   // Tier 1 — base | stage 100+ (HP100, Armor100) | stage 150+ (HP150, Armor150)
-  { tier: 1, block_type: "dirt", health: 100, xp: 0.05, armor: 0, fragment: 0.0, floor_min: 1, floor_max: 11, health_100: 200, armor_100: 0, health_150: 400, armor_150: 0 },
-  { tier: 1, block_type: "common", health: 250, xp: 0.15, armor: 5, fragment: 0.01, floor_min: 1, floor_max: 17, health_100: 500, armor_100: 7.5, health_150: 1000, armor_150: 7.5 },
-  { tier: 1, block_type: "rare", health: 550, xp: 0.35, armor: 12, fragment: 0.01, floor_min: 3, floor_max: 25, health_100: 1100, armor_100: 18, health_150: 2200, armor_150: 18 },
-  { tier: 1, block_type: "epic", health: 1150, xp: 1.0, armor: 25, fragment: 0.01, floor_min: 6, floor_max: 29, health_100: 2300, armor_100: 37.5, health_150: 4600, armor_150: 37.5 },
-  { tier: 1, block_type: "legendary", health: 1950, xp: 3.5, armor: 50, fragment: 0.01, floor_min: 12, floor_max: 31, health_100: 3900, armor_100: 75, health_150: 7800, armor_150: 75 },
-  { tier: 1, block_type: "mythic", health: 3500, xp: 7.5, armor: 150, fragment: 0.01, floor_min: 20, floor_max: 34, health_100: 7000, armor_100: 225, health_150: 14000, armor_150: 225 },
-
-  // Tier 2
-  { tier: 2, block_type: "dirt", health: 300, xp: 0.15, armor: 0, fragment: 0.0, floor_min: 12, floor_max: 23, health_100: 600, armor_100: 0, health_150: 1200, armor_150: 0 },
-  { tier: 2, block_type: "common", health: 750, xp: 0.45, armor: 8.25, fragment: 0.02, floor_min: 18, floor_max: 29, health_100: 1500, armor_100: 12.38, health_150: 3000, armor_150: 12.38 },
-  { tier: 2, block_type: "rare", health: 1650, xp: 1.05, armor: 19.8, fragment: 0.02, floor_min: 26, floor_max: 35, health_100: 3300, armor_100: 29.7, health_150: 6600, armor_150: 29.7 },
-  { tier: 2, block_type: "epic", health: 3450, xp: 3.0, armor: 41.25, fragment: 0.02, floor_min: 30, floor_max: 41, health_100: 6900, armor_100: 61.88, health_150: 13800, armor_150: 61.88 },
-  { tier: 2, block_type: "legendary", health: 5850, xp: 10.5, armor: 82.5, fragment: 0.02, floor_min: 32, floor_max: 44, health_100: 11700, armor_100: 123.75, health_150: 23400, armor_150: 123.75 },
-  { tier: 2, block_type: "mythic", health: 10500, xp: 22.5, armor: 247.5, fragment: 0.02, floor_min: 35, floor_max: 49, health_100: 21000, armor_100: 371.25, health_150: 42000, armor_150: 371.25 },
-
-  // Tier 3
-  { tier: 3, block_type: "dirt", health: 900, xp: 0.45, armor: 0, fragment: 0, floor_min: 24, floor_max: 80, health_100: 1800, armor_100: 0, health_150: 3600, armor_150: 0 },
-  { tier: 3, block_type: "common", health: 2250, xp: 1.35, armor: 13.61, fragment: 0.04, floor_min: 30, floor_max: 95, health_100: 4500, armor_100: 20.42, health_150: 9000, armor_150: 20.42 },
-  { tier: 3, block_type: "rare", health: 4950, xp: 3.15, armor: 32.67, fragment: 0.04, floor_min: 36, floor_max: 110, health_100: 9900, armor_100: 49, health_150: 19800, armor_150: 49 },
-  { tier: 3, block_type: "epic", health: 10350, xp: 9.0, armor: 68.06, fragment: 0.04, floor_min: 42, floor_max: 125, health_100: 20700, armor_100: 102.09, health_150: 41400, armor_150: 102.09 },
-  { tier: 3, block_type: "legendary", health: 17550, xp: 31.5, armor: 136.12, fragment: 0.04, floor_min: 45, floor_max: 135, health_100: 35100, armor_100: 204.19, health_150: 70200, armor_150: 204.19 },
-  { tier: 3, block_type: "mythic", health: 31500, xp: 67.5, armor: 408.37, fragment: 0.04, floor_min: 50, floor_max: 140, health_100: 63000, armor_100: 612.56, health_150: 126000, armor_150: 612.56 },
-
-  // Tier 4 — wiki Block Stats (Tier unlock wave = first stage this tier appears)
-  { tier: 4, block_type: "dirt", health: 2700, xp: 1.35, armor: 0, fragment: 0, floor_min: 81, floor_max: Number.POSITIVE_INFINITY, health_100: 5400, armor_100: 0, health_150: 10800, armor_150: 0 },
-  { tier: 4, block_type: "common", health: 6750, xp: 4.05, armor: 22.46, fragment: 0.08, floor_min: 96, floor_max: Number.POSITIVE_INFINITY, health_100: 13500, armor_100: 33.69, health_150: 27000, armor_150: 33.69 },
-  { tier: 4, block_type: "rare", health: 14850, xp: 9.45, armor: 53.91, fragment: 0.08, floor_min: 111, floor_max: Number.POSITIVE_INFINITY, health_100: 29700, armor_100: 80.86, health_150: 59400, armor_150: 80.86 },
-  { tier: 4, block_type: "epic", health: 31050, xp: 27.0, armor: 112.3, fragment: 0.08, floor_min: 126, floor_max: Number.POSITIVE_INFINITY, health_100: 62100, armor_100: 168.45, health_150: 124200, armor_150: 168.45 },
-  { tier: 4, block_type: "legendary", health: 52650, xp: 94.5, armor: 224.61, fragment: 0.08, floor_min: 136, floor_max: Number.POSITIVE_INFINITY, health_100: 105300, armor_100: 336.91, health_150: 210600, armor_150: 336.91 },
-  { tier: 4, block_type: "mythic", health: 94500, xp: 202.5, armor: 673.82, fragment: 0.08, floor_min: 141, floor_max: Number.POSITIVE_INFINITY, health_100: 189000, armor_100: 1010.73, health_150: 378000, armor_150: 1010.73 },
+  { tier: 1, block_type: "dirt",      health: 100,     xp: 0.05,  armor: 0,        fragment: 0.0,   floor_min: 1,    floor_max: 11,                         health_100: 200,     armor_100: 0,        health_150: 400,     armor_150: 0 },
+  { tier: 1, block_type: "common",    health: 250,     xp: 0.15,  armor: 5,        fragment: 0.01,  floor_min: 1,    floor_max: 17,                         health_100: 500,     armor_100: 7.5,      health_150: 1000,    armor_150: 7.5 },
+  { tier: 1, block_type: "rare",      health: 550,     xp: 0.35,  armor: 12,       fragment: 0.01,  floor_min: 3,    floor_max: 25,                         health_100: 1100,    armor_100: 18,       health_150: 2200,    armor_150: 18 },
+  { tier: 1, block_type: "epic",      health: 1150,    xp: 1.0,   armor: 25,       fragment: 0.01,  floor_min: 6,    floor_max: 29,                         health_100: 2300,    armor_100: 37.5,     health_150: 4600,    armor_150: 37.5 },
+  { tier: 1, block_type: "legendary", health: 1950,    xp: 3.5,   armor: 50,       fragment: 0.01,  floor_min: 12,   floor_max: 31,                         health_100: 3900,    armor_100: 75,       health_150: 7800,    armor_150: 75 },
+  { tier: 1, block_type: "mythic",    health: 3500,    xp: 7.5,   armor: 150,      fragment: 0.01,  floor_min: 20,   floor_max: 34,                         health_100: 7000,    armor_100: 225,      health_150: 14000,   armor_150: 225 },
+  { tier: 1, block_type: "divine",    health: 25000,   xp: 20,    armor: 300,      fragment: 0.01,  floor_min: 50,   floor_max: 74,                         health_100: 50000,   armor_100: 450,      health_150: 100000,  armor_150: 450 },
+            
+  // Tier 2 
+  { tier: 2, block_type: "dirt",      health: 300,     xp: 0.15,  armor: 0,        fragment: 0.0,   floor_min: 12,   floor_max: 23,                         health_100: 600,     armor_100: 0,        health_150: 1200,    armor_150: 0 },
+  { tier: 2, block_type: "common",    health: 750,     xp: 0.45,  armor: 8.25,     fragment: 0.02,  floor_min: 18,   floor_max: 29,                         health_100: 1500,    armor_100: 12.38,    health_150: 3000,    armor_150: 12.38 },
+  { tier: 2, block_type: "rare",      health: 1650,    xp: 1.05,  armor: 19.8,     fragment: 0.02,  floor_min: 26,   floor_max: 35,                         health_100: 3300,    armor_100: 29.7,     health_150: 6600,    armor_150: 29.7 },
+  { tier: 2, block_type: "epic",      health: 3450,    xp: 3.0,   armor: 41.25,    fragment: 0.02,  floor_min: 30,   floor_max: 41,                         health_100: 6900,    armor_100: 61.88,    health_150: 13800,   armor_150: 61.88 },
+  { tier: 2, block_type: "legendary", health: 5850,    xp: 10.5,  armor: 82.5,     fragment: 0.02,  floor_min: 32,   floor_max: 44,                         health_100: 11700,   armor_100: 123.75,   health_150: 23400,   armor_150: 123.75 },
+  { tier: 2, block_type: "mythic",    health: 10500,   xp: 22.5,  armor: 247.5,    fragment: 0.02,  floor_min: 35,   floor_max: 49,                         health_100: 21000,   armor_100: 371.25,   health_150: 42000,   armor_150: 371.25 },
+  { tier: 2, block_type: "divine",    health: 75000,   xp: 60,    armor: 495,      fragment: 0.02,  floor_min: 75,   floor_max: 99,                         health_100: 150000,  armor_100: 742.5,    health_150: 300000,  armor_150: 450 },
+            
+  // Tier 3 
+  { tier: 3, block_type: "dirt",      health: 900,     xp: 0.45,  armor: 0,        fragment: 0.0,   floor_min: 24,   floor_max: 80,                         health_100: 1800,    armor_100: 0,        health_150: 3600,    armor_150: 0 },
+  { tier: 3, block_type: "common",    health: 2250,    xp: 1.35,  armor: 13.61,    fragment: 0.04,  floor_min: 30,   floor_max: 95,                         health_100: 4500,    armor_100: 20.42,    health_150: 9000,    armor_150: 20.42 },
+  { tier: 3, block_type: "rare",      health: 4950,    xp: 3.15,  armor: 32.67,    fragment: 0.04,  floor_min: 36,   floor_max: 110,                        health_100: 9900,    armor_100: 49,       health_150: 19800,   armor_150: 49 },
+  { tier: 3, block_type: "epic",      health: 10350,   xp: 9.0,   armor: 68.06,    fragment: 0.04,  floor_min: 42,   floor_max: 125,                        health_100: 20700,   armor_100: 102.09,   health_150: 41400,   armor_150: 102.09 },
+  { tier: 3, block_type: "legendary", health: 17550,   xp: 31.5,  armor: 136.12,   fragment: 0.04,  floor_min: 45,   floor_max: 135,                        health_100: 35100,   armor_100: 204.19,   health_150: 70200,   armor_150: 204.19 },
+  { tier: 3, block_type: "mythic",    health: 31500,   xp: 67.5,  armor: 408.37,   fragment: 0.04,  floor_min: 50,   floor_max: 140,                        health_100: 63000,   armor_100: 612.56,   health_150: 126000,  armor_150: 612.56 },
+  { tier: 3, block_type: "divine",    health: 225000,  xp: 180,   armor: 816.75,   fragment: 0.04,  floor_min: 100,  floor_max: 149,                        health_100: 450000,  armor_100: 1225.13,  health_150: 900000,  armor_150: 1225.13 },
+            
+  // Tier 4 
+  { tier: 4, block_type: "dirt",      health: 2700,    xp: 1.35,  armor: 0,        fragment: 0.0,   floor_min: 81,   floor_max: Number.POSITIVE_INFINITY,   health_100: 5400,    armor_100: 0,        health_150: 10800,   armor_150: 0 },
+  { tier: 4, block_type: "common",    health: 6750,    xp: 4.05,  armor: 22.46,    fragment: 0.08,  floor_min: 96,   floor_max: Number.POSITIVE_INFINITY,   health_100: 13500,   armor_100: 33.69,    health_150: 27000,   armor_150: 33.69 },
+  { tier: 4, block_type: "rare",      health: 14850,   xp: 9.45,  armor: 53.91,    fragment: 0.08,  floor_min: 111,  floor_max: Number.POSITIVE_INFINITY,   health_100: 29700,   armor_100: 80.86,    health_150: 59400,   armor_150: 80.86 },
+  { tier: 4, block_type: "epic",      health: 31050,   xp: 27.0,  armor: 112.3,    fragment: 0.08,  floor_min: 126,  floor_max: Number.POSITIVE_INFINITY,   health_100: 62100,   armor_100: 168.45,   health_150: 124200,  armor_150: 168.45 },
+  { tier: 4, block_type: "legendary", health: 52650,   xp: 94.5,  armor: 224.61,   fragment: 0.08,  floor_min: 136,  floor_max: Number.POSITIVE_INFINITY,   health_100: 105300,  armor_100: 336.91,   health_150: 210600,  armor_150: 336.91 },
+  { tier: 4, block_type: "mythic",    health: 94500,   xp: 202.5, armor: 673.82,   fragment: 0.08,  floor_min: 141,  floor_max: Number.POSITIVE_INFINITY,   health_100: 189000,  armor_100: 1010.73,  health_150: 378000,  armor_150: 1010.73 },
+  { tier: 4, block_type: "divine",    health: 675000,  xp: 540,   armor: 1347.64,  fragment: 0.08,  floor_min: 150,  floor_max: Number.POSITIVE_INFINITY,   health_100: 1350000, armor_100: 2021.46,  health_150: 2700000, armor_150: 2021.46 }
 ];
 
 function key(tier: number, bt: string) {
