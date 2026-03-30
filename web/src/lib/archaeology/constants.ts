@@ -26,6 +26,8 @@ export const SKILL_BONUSES: Record<
     armor_pen_mult: number;
     all_mod_chance: number;
     one_hit_chance: number;
+    super_crit_chance: number;
+    crosshair_auto_tap: number;
   }>
 > = {
   strength: { flat_damage: 1, percent_damage: 0.01, crit_damage: 0.03 },
@@ -71,7 +73,7 @@ export const GEM_UPGRADE_BONUSES: Record<
 
 export const FRAGMENT_UPGRADES: Record<
   string,
-  { max_level: number; stage_unlock: number; cost_type: "common" | "rare" | "epic" | "legendary" | "mythic"; display_name: string } & Record<
+  { max_level: number; stage_unlock: number; cost_type: "common" | "rare" | "epic" | "legendary" | "mythic" | "divine"; display_name: string } & Record<
     string,
     number | string
   >
