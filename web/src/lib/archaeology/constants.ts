@@ -109,6 +109,9 @@ export const FRAGMENT_UPGRADES: Record<
   exp_mod_m1: { exp_mod_gain: 0.1, exp_mod_chance: 0.001, max_level: 20, stage_unlock: 30, cost_type: "mythic", display_name: "EXP Mod Gain +0.10x, EXP Mod Chance +0.10%" },
   ability_stam_m1: { ability_instacharge: 0.003, max_stamina: 4, max_level: 20, stage_unlock: 32, cost_type: "mythic", display_name: "Ability Instacharge +0.30%, Max Stamina +4" },
   exp_stat_cap_m1: { xp_bonus_mult: 2.0, all_stat_cap: 5, max_level: 1, stage_unlock: 42, cost_type: "mythic", display_name: "Exp Gain 2.00x, All Stat Point Caps +5" },
+
+  str_skill_buff: { percent_damage_skill: 0.01, crit_damage_skill: 0.01, max_level: 1, stage_unlock: 50, cost_type: "divine", display_name: "Strength Skill Buff: Damage: 1%, Crit Damage 1%" },
+  
 };
 
 export const GEM_COSTS: Record<ArchGemUpgradeKey, number[]> = {
@@ -130,7 +133,7 @@ export const BLOCK_COLORS: Record<BlockType, string> = {
   epic: "#9932CC",
   legendary: "#6B5200",
   mythic: "#FF4500",
-  divinity: "",
+  divinity: "#ffff88",
 };
 
 export const SLOTS_PER_FLOOR = 24;
