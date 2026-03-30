@@ -3050,8 +3050,8 @@ export function ArchSim() {
             : t === "mythic"
               ? "sprites/archaeology/fragmentmythic.png"
               : t === "divine"
-                ? "sprites/archaeology/fragmentdivine.png"
-   }:
+                ? "sprites/archaeology/fragmentdivine.png";
+  }
 
   function renderTieBreakBars(tb: NonNullable<TieBreakReport>): ReactNode {
     if (!tb?.top3?.length) return null;
