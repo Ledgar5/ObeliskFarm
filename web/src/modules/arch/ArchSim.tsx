@@ -685,7 +685,7 @@ export function ArchSim() {
              heading: "Per point (actual)",
             lines: [
               <>Damage: +{strFlatActual} flat{strFlatActual !== strFlatBase ? boostedByFrag : null}</>,
-              `Super Crit Chance: +${fmtPct(divCritBase, 0)}%`,
+              `Super Crit Chance: +${fmtPct(SKILL_BONUSES.divinity?.crit_chance ?? 0, 0)}%`,
               "Crosshair Auto-Tap (active gameplay) is not modeled here.",
             ],
           }, 
