@@ -55,3 +55,14 @@ export const FRAGMENT_UPGRADE_COSTS: Record<string, number[]> = {
   ability_stam_mod: [],
   damage_arch_xp: [],
 };
+
+export function getUpgradeCost(upgradeKey: string, level0: number): number | null {
+  const costs = FRAGMENT_UPGRADE_COSTS[upgradeKey];
+  if (!costs) return null;
+  if (level0 >= costs.length) return null;
+  return costs[level0] ?? null;
+}
+
+export function getMaxLevel(upgradeKey: string): number {
+  return FRAGMENT_UPGRADE_COSTS[upgradeKey]?.length ?? 0;
+}
