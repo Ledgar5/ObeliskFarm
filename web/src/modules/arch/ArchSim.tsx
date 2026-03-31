@@ -2319,6 +2319,7 @@ export function ArchSim() {
         perception: winnerDist.perception ?? 0,
         intellect: winnerDist.intellect ?? 0,
         luck: winnerDist.luck ?? 0,
+        divinity: winnerDist.divinity ?? 0,
       },
     };
     const unlockedUpgrades = sortedFragmentUpgrades.filter(([key, info]) => {
