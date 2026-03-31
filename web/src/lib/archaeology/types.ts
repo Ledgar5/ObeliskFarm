@@ -43,6 +43,10 @@ export type ArchBuild = {
 
   /** Archaeology Bundle!: when enabled, fragment gain ×1.25. */
   archBundleEnabled?: boolean;
+  
+  /** Ascension 1: unlocks Divinity and new bonuses. */
+  ascension1Enabled?: boolean;
+
 };
 
 export type ArchStats = {
