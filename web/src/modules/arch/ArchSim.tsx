@@ -198,7 +198,6 @@ function defaultBuild(): ArchBuild {
     level1TributeEnabled: false,
     mythicChestsOwned: 0,
     archBundleEnabled: false,
-    ascension1: false,
   };
 }
 
