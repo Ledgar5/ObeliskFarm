@@ -59,7 +59,8 @@ export function getFragmentUpgradeBonuses(levels: Record<string, number>): Recor
 export function getAbilityCooldownMultiplier(miscCardLevel: number): number {
   if (miscCardLevel === 1) return 0.97;
   if (miscCardLevel === 2) return 0.94;
-  if (miscCardLevel === 3) return 0.9;
+  if (miscCardLevel === 3) return 0.90;
+  if (miscCardLevel === 4) return 0.86;
   return 1.0;
 }
 
